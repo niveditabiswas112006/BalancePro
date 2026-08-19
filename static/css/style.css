@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Fredoka:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap');
+
+:root {
+    --bg-color: #FDFBF7; /* Warm soft cream paper */
+    --card-bg: #FFFFFF;
+    --border-color: #222222; /* Charcoal black */
+    --primary-banana: #FFD000; /* Rich banana yellow */
+    --primary-banana-hover: #E6BC00;
+    --accent-orange: #E76F51; /* Warm terracotta */
+    --healthy-green: #38B000; /* Leaf green */
+    --unhealthy-red: #D94E34; /* Soft crimson */
+    --text-color: #222222;
+    --font-heading: 'Fredoka', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-hand: 'Architects Daughter', cursive;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(rgba(34, 34, 34, 0.08) 1.5px, transparent 1.5px),
+        radial-gradient(rgba(34, 34, 34, 0.08) 1.5px, transparent 1.5px);
+    background-size: 30px 30px;
+    background-position: 0 0, 15px 15px;
+    color: var(--text-color);
+    font-family: var(--font-body);
+    padding-bottom: 50px;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.hand-drawn-font {
+    font-family: var(--font-hand);
+}
+
+/* Neobrutalist Sticker Layouts */
+.banana-card {
+    background-color: var(--card-bg);
+    border: 3px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 5px 5px 0px 0px var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.banana-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0px 0px var(--border-color);
+}
+
+/* Doodle / Sticker overlays */
+.sticker {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.sticker-top-right {
+    top: -5px;
+    right: -5px;
+    transform: rotate(15deg);
+}
+
+/* Metric highlight cards */
+.metric-card {
+    border-radius: 12px;
+    border: 3px solid var(--border-color);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 4px 4px 0px 0px var(--border-color);
+}
+
+.metric-card-yellow { background-color: #FFF6CC; }
+.metric-card-green { background-color: #E2F5D9; }
+.metric-card-orange { background-color: #FFE6D6; }
+.metric-card-charcoal { background-color: #EAEAEA; }
+
+.metric-value {
+    font-size: 2rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* Algorithm selector cards */
+.algo-btn {
+    width: 100%;
+    text-align: left;
+    background-color: var(--card-bg);
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 3px 3px 0px 0px var(--border-color);
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.algo-btn:hover {
+    background-color: #FAF7F0;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px 0px var(--border-color);
+}
+
+.algo-btn.active {
+    background-color: var(--primary-banana);
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px 0px var(--border-color);
+}
+
+.algo-btn h5 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Interactive Controls & Buttons */
+.banana-btn {
+    font-family: var(--font-heading);
+    background-color: var(--primary-banana);
+    border: 3px solid var(--border-color);
+    border-radius: 30px;
+    padding: 8px 24px;
+    font-weight: 600;
+    box-shadow: 3px 3px 0px 0px var(--border-color);
+    transition: all 0.15s ease;
+}
+
+.banana-btn:hover {
+    background-color: var(--primary-banana-hover);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px 0px var(--border-color);
+}
+
+.banana-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px 0px var(--border-color);
+}
+
+.banana-btn-orange {
+    background-color: var(--accent-orange);
+    color: white;
+}
+.banana-btn-orange:hover {
+    background-color: #D85D40;
+}
+
+.banana-btn-gray {
+    background-color: #E0DFDB;
+}
+.banana-btn-gray:hover {
+    background-color: #CDCCC8;
+}
+
+/* Server visual cards */
+.server-card {
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 4px 4px 0px 0px var(--border-color);
+    background-color: #FFFFFF;
+    position: relative;
+}
+
+.server-card.unhealthy {
+    background-color: #FFF2F0;
+    border-color: var(--unhealthy-red);
+}
+
+.server-card.unhealthy::before {
+    content: "CRASHED";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background-color: var(--unhealthy-red);
+    color: white;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    padding: 4px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 2px 2px 0px 0px var(--border-color);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Sliding sliders */
+.banana-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #EAE9E4;
+    outline: none;
+    border: 2px solid var(--border-color);
+}
+
+.banana-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-banana);
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    box-shadow: 1px 1px 0px 0px var(--border-color);
+}
+
+/* Real-time Network Visualizer Area */
+.network-canvas-container {
+    width: 100%;
+    height: 280px;
+    background-color: #FAF8F2;
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+#topology-svg {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Custom packet animation */
+.request-packet {
+    fill: var(--primary-banana);
+    stroke: var(--border-color);
+    stroke-width: 1.5;
+    animation: flowPacket 1s ease-in-out infinite;
+}
+
+@keyframes flowPacket {
+    0% { offset-distance: 0%; }
+    100% { offset-distance: 100%; }
+}
+
+/* Terminal Console Log */
+.terminal-console {
+    background-color: #222222;
+    color: #F8F9FA;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    padding: 15px;
+    border-radius: 12px;
+    height: 250px;
+    overflow-y: auto;
+    border: 3px solid var(--border-color);
+    box-shadow: 4px 4px 0px 0px var(--border-color);
+}
+
+.terminal-line {
+    margin-bottom: 6px;
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+.log-rr { color: #E9C46A; }
+.log-wrr { color: #FF9F1C; }
+.log-lc { color: #52B788; }
+.log-fail { color: #E76F51; }
+.log-success { color: #74C69D; }
+
+/* Status Badges */
+.badge-status {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.badge-healthy {
+    background-color: var(--healthy-green);
+    color: white;
+}
+
+.badge-unhealthy {
+    background-color: var(--unhealthy-red);
+    color: white;
+}
+
+/* Hand-drawn dividers */
+.doodle-divider {
+    height: 15px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='15' viewBox='0 0 100 15'><path d='M0,5 Q25,12 50,3 T100,8' fill='none' stroke='%23222222' stroke-width='2'/></svg>");
+    background-repeat: repeat-x;
+    margin: 20px 0;
+    border: none;
+}

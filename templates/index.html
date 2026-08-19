@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BalancePro - Intelligent Load Balancing System</title>
+    <!-- Compelling description for SEO -->
+    <meta name="description" content="BalancePro: A highly interactive, academic simulation and implementation of a smart, fault-tolerant web server load balancer featuring Round Robin, Weighted Round Robin, and Least Connections.">
+    <!-- Bootstrap 5 CSS for grid support -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styling overriding Bootstrap with warm Banana/Doodle theme -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Cute Top Header Bar -->
+    <header class="container mt-4">
+        <div class="banana-card bg-white d-flex flex-wrap align-items-center justify-content-between p-4">
+            <!-- Doodle Sticker: Star -->
+            <div class="sticker sticker-top-right">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                    <polygon points="30,5 38,20 55,22 42,34 46,50 30,42 14,50 18,34 5,22 22,20" fill="#FFD000" stroke="#222" stroke-width="3"/>
+                </svg>
+            </div>
+            
+            <div class="d-flex align-items-center">
+                <!-- Cute Banana Load Balancer Logo Doodle -->
+                <svg class="me-3" width="70" height="70" viewBox="0 0 100 100" style="transform: rotate(-10deg);">
+                    <!-- Handdrawn styled banana shape -->
+                    <path d="M15,80 C30,70 50,70 70,55 C80,45 88,30 90,15 C91,10 88,8 85,10 C75,18 68,32 55,42 C38,55 25,60 10,65 C5,67 5,75 10,78 Z" fill="#FFE066" stroke="#222" stroke-width="4"/>
+                    <path d="M15,80 L8,88 C6,90 4,90 2,87 C0,84 2,80 5,78 L15,80 Z" fill="#8B5A2B" stroke="#222" stroke-width="3"/>
+                    <path d="M90,15 C88,20 84,24 80,26" fill="none" stroke="#222" stroke-width="3"/>
+                    <!-- Cute smiling face on logo -->
+                    <circle cx="65" cy="40" r="4" fill="#222"/>
+                    <circle cx="53" cy="46" r="4" fill="#222"/>
+                    <path d="M57,51 Q60,55 63,52" fill="none" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <div>
+                    <h1 class="mb-0 text-uppercase d-inline-block">BalancePro</h1>
+                    <span class="badge-status badge-healthy ms-2">v1.2 Active</span>
+                    <p class="mb-0 text-muted hand-drawn-font" style="font-size: 1.1rem; color: #555 !important;">
+                        Intelligent & Fault-Tolerant Load Balancing System
+                    </p>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center mt-3 mt-md-0">
+                <span class="me-2 fw-semibold">Global Health Status:</span>
+                <div id="system-health-badge" class="badge-status badge-healthy">SYSTEM STABLE</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Key Analytics Highlights Section -->
+    <main class="container">
+        <section class="row mb-2">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="metric-card metric-card-yellow" id="stat-total-req-card">
+                    <div>
+                        <div class="text-uppercase text-muted small fw-bold">Total Requests</div>
+                        <div class="metric-value" id="val-total-requests">0</div>
+                    </div>
+                    <!-- Cute paper plane doodle -->
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="metric-card metric-card-green" id="stat-success-card">
+                    <div>
+                        <div class="text-uppercase text-muted small fw-bold">Success Rate</div>
+                        <div class="metric-value" id="val-success-rate">100%</div>
+                    </div>
+                    <!-- Cute smiling sun doodle -->
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="metric-card metric-card-orange" id="stat-latency-card">
+                    <div>
+                        <div class="text-uppercase text-muted small fw-bold">Avg Latency</div>
+                        <div class="metric-value"><span id="val-avg-latency">0</span><span style="font-size: 1rem;"> ms</span></div>
+                    </div>
+                    <!-- Hourglass doodle -->
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 2h14M5 22h14M19 2v4c0 4-3 7-7 7s-7-3-7-7V2M19 22v-4c0-4-3-7-7-7s-7 3-7 7v4"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="metric-card metric-card-charcoal" id="stat-active-card">
+                    <div>
+                        <div class="text-uppercase text-muted small fw-bold">Active Conn.</div>
+                        <div class="metric-value" id="val-active-connections">0</div>
+                    </div>
+                    <!-- Plug icon doodle -->
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 10h-1.25A3 3 0 0 0 14 13v2.25A3 3 0 0 1 11.25 18H9"></path>
+                        <path d="M10 6h4v4h-4zM6 10h4M14 10h4M8 14v4M12 14v4M6 6v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6"></path>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Divider line -->
+        <hr class="doodle-divider">
+
+        <!-- Interactive Playground -->
+        <section class="row">
+            <!-- Left Side: Algorithm Picker & Controls -->
+            <div class="col-lg-4 mb-4">
+                <div class="banana-card h-100">
+                    <h3 class="border-bottom pb-2 mb-3">
+                        <!-- Tiny gear doodle -->
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" style="animation: spin 5s linear infinite;">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        Algorithm Selector
+                    </h3>
+                    
+                    <button id="btn-algo-lc" class="algo-btn active" onclick="setAlgorithm('least_connections')">
+                        <h5>
+                            <span class="badge bg-dark me-2">PROD</span>
+                            Least Connections
+                        </h5>
+                        <small class="text-muted d-block mt-1">Routes request to the server with the lowest connection load. High resource efficiency.</small>
+                    </button>
+                    
+                    <button id="btn-algo-rr" class="algo-btn" onclick="setAlgorithm('round_robin')">
+                        <h5>Round Robin</h5>
+                        <small class="text-muted d-block mt-1">Distributes requests sequentially in a fixed circle among healthy servers.</small>
+                    </button>
+                    
+                    <button id="btn-algo-wrr" class="algo-btn" onclick="setAlgorithm('weighted_round_robin')">
+                        <h5>Weighted Round Robin</h5>
+                        <small class="text-muted d-block mt-1">Distributes requests proportionally using pre-assigned server capacities.</small>
+                    </button>
+
+                    <h4 class="mt-4 border-top pt-3">Traffic Simulation</h4>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Auto-Traffic Speed:</label>
+                        <select id="select-traffic-rate" class="form-select border-2 border-dark" style="border-radius: 8px;">
+                            <option value="2">2 Requests / Sec (Normal)</option>
+                            <option value="5">5 Requests / Sec (High Load)</option>
+                            <option value="10">10 Requests / Sec (Spike Test)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button id="btn-send-single" class="banana-btn banana-btn-gray" onclick="sendSingleRequest()">
+                            Send Single Request
+                        </button>
+                        <button id="btn-toggle-traffic" class="banana-btn" onclick="toggleTrafficSimulation()">
+                            Start Auto-Traffic
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle: Live Topology Visualizer -->
+            <div class="col-lg-5 mb-4">
+                <div class="banana-card h-100">
+                    <h3 class="border-bottom pb-2 mb-3">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" class="me-1">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                        Network Flow Visualizer
+                    </h3>
+                    <p class="small text-muted">Watch dynamic requests (represented by little banana nodes 🍌) flow through the Load Balancer to servers.</p>
+                    
+                    <!-- Dynamic SVG Network Topology Canvas -->
+                    <div class="network-canvas-container">
+                        <svg id="topology-svg">
+                            <!-- Background connection wires -->
+                            <g id="topology-wires" stroke="#2B2A27" stroke-width="3" stroke-dasharray="6,6" fill="none"></g>
+                            <!-- Animated request packets -->
+                            <g id="topology-packets"></g>
+                            <!-- Network nodes -->
+                            <g id="topology-nodes"></g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Real-time Transaction logs -->
+            <div class="col-lg-3 mb-4">
+                <div class="banana-card h-100">
+                    <h3 class="border-bottom pb-2 mb-3">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" class="me-1">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        Live Terminal
+                    </h3>
+                    <p class="small text-muted">Real-time HTTP routing and monitoring transactions:</p>
+                    
+                    <div id="terminal-console" class="terminal-console">
+                        <div class="terminal-line text-muted">[SYSTEM] BalancePro active. Listening on Port 8080...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Divider Line -->
+        <hr class="doodle-divider">
+
+        <!-- Server Pool Controls -->
+        <section class="mb-4">
+            <div class="banana-card">
+                <h2 class="mb-4 d-flex align-items-center">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" class="me-2">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                    </svg>
+                    Active Backend Server Pool
+                </h2>
+                
+                <div class="row" id="servers-container">
+                    <!-- Dynamic server cards go here (rendered by JS) -->
+                    <div class="col-12 text-center py-4">
+                        <div class="spinner-border text-dark" role="status">
+                            <span class="visually-hidden">Loading server states...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Divider Line -->
+        <hr class="doodle-divider">
+
+        <!-- Charts Dashboard Analytics -->
+        <section class="row">
+            <div class="col-md-4 mb-4">
+                <div class="banana-card h-100">
+                    <h4 class="mb-3 border-bottom pb-2">Traffic Load Distribution</h4>
+                    <div style="position: relative; height: 230px;">
+                        <canvas id="chart-distribution"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="banana-card h-100">
+                    <h4 class="mb-3 border-bottom pb-2">Active Server Connections</h4>
+                    <div style="position: relative; height: 230px;">
+                        <canvas id="chart-utilization"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="banana-card h-100">
+                    <h4 class="mb-3 border-bottom pb-2">Latency History (ms)</h4>
+                    <div style="position: relative; height: 230px;">
+                        <canvas id="chart-latency"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Admin Simulation Panel -->
+        <section class="mt-2 mb-4">
+            <div class="banana-card bg-white" style="border-style: dashed; border-color: var(--accent-orange);">
+                <h4 class="text-uppercase" style="color: var(--accent-orange);">
+                    <!-- Hand-drawn warning flag -->
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                        <line x1="4" y1="22" x2="4" y2="15"></line>
+                    </svg>
+                    Thunder Client API Reference & Sandbox
+                </h4>
+                <p class="small text-muted mb-3">Use these API endpoints locally inside VS Code's <strong>Thunder Client</strong> or <strong>curl</strong> to trigger actions, trace routing transactions, and capture academic screenshots.</p>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="p-2 border border-2 rounded bg-light font-monospace small mb-2">
+                            <span class="badge bg-success">GET</span> http://127.0.0.1:8080/servers
+                        </div>
+                        <div class="p-2 border border-2 rounded bg-light font-monospace small mb-2">
+                            <span class="badge bg-success">GET</span> http://127.0.0.1:8080/metrics
+                        </div>
+                        <div class="p-2 border border-2 rounded bg-light font-monospace small mb-2">
+                            <span class="badge bg-warning text-dark">POST</span> http://127.0.0.1:8080/request
+                            <br><span class="text-muted" style="font-size: 0.75rem;">Payload: {"payload": "testing data"}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="p-2 border border-2 rounded bg-light font-monospace small mb-2">
+                            <span class="badge bg-warning text-dark">POST</span> http://127.0.0.1:8080/simulate-failure
+                            <br><span class="text-muted" style="font-size: 0.75rem;">Payload: {"server_id": 1}</span>
+                        </div>
+                        <div class="p-2 border border-2 rounded bg-light font-monospace small mb-2">
+                            <span class="badge bg-warning text-dark">POST</span> http://127.0.0.1:8080/recover-server
+                            <br><span class="text-muted" style="font-size: 0.75rem;">Payload: {"server_id": 1}</span>
+                        </div>
+                        <div class="p-2 border border-2 rounded bg-light font-monospace small mb-2">
+                            <span class="badge bg-warning text-dark">POST</span> http://127.0.0.1:8080/simulate-traffic
+                            <br><span class="text-muted" style="font-size: 0.75rem;">Payload: {"active": true, "rate": 5}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center text-muted small mt-5">
+        <p class="mb-1">BalancePro &copy; 2026 - Academic Project Deliverable</p>
+        <p class="hand-drawn-font" style="font-size: 0.95rem;">Created with 🍌, SQLite, and Flask.</p>
+    </footer>
+
+    <!-- Spin animation definition -->
+    <style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- Load external scripts: Bootstrap Bundle + Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Dashboard Logic -->
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
